@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { MapPin, Phone, Clock, ArrowUpRight } from "lucide-react";
 import { Button } from "./ui/button";
 import { LucideIcon } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface LocationCardProps {
+  id: number;
   name: string;
   address: string;
   phone: string;
@@ -16,6 +18,7 @@ interface LocationCardProps {
 }
 
 export const LocationCard = ({
+  id,
   name,
   address,
   phone,
@@ -75,10 +78,12 @@ export const LocationCard = ({
         </div>
 
         {/* Action */}
-        <Button variant="outline" size="sm" className="w-full group/btn">
-          View Details
-          <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
-        </Button>
+        <Link to={`/location/${id}`}>
+          <Button variant="outline" size="sm" className="w-full group/btn">
+            View Details
+            <ArrowUpRight className="w-4 h-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5" />
+          </Button>
+        </Link>
       </div>
     </motion.div>
   );
