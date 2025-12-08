@@ -13,7 +13,7 @@ import { getLocationById } from "@/data/locations";
 
 const LocationDetail = () => {
   const { id } = useParams<{ id: string }>();
-  const location = getLocationById(Number(id));
+  const location = getLocationById(id || "");
 
   if (!location) {
     return (

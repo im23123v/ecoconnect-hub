@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Leaf, Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -45,9 +46,11 @@ export const Navbar = () => {
 
           {/* CTA Button */}
           <div className="hidden md:block">
-            <Button variant="hero" size="default">
-              Join Network
-            </Button>
+            <Link to="/join-network">
+              <Button variant="hero" size="default">
+                Join Network
+              </Button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -80,9 +83,11 @@ export const Navbar = () => {
                   {link.name}
                 </a>
               ))}
-              <Button variant="hero" size="lg" className="w-full mt-4">
-                Join Network
-              </Button>
+              <Link to="/join-network">
+                <Button variant="hero" size="lg" className="w-full mt-4">
+                  Join Network
+                </Button>
+              </Link>
             </div>
           </motion.div>
         )}
