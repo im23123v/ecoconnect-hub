@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { Building2, Leaf, Truck, Award, ArrowRight } from "lucide-react";
 import { Button } from "./ui/button";
 
@@ -130,10 +131,12 @@ export const PartnersSection = () => {
             Join hundreds of businesses transforming waste into opportunity. Get started in minutes.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button variant="hero" size="xl">
-              Register Your Business
-              <ArrowRight className="w-5 h-5" />
-            </Button>
+            <Link to="/join-network">
+              <Button variant="hero" size="xl">
+                Register Your Business
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </Link>
             <Button variant="outline" size="xl">
               Contact Sales
             </Button>

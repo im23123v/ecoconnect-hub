@@ -7,7 +7,7 @@ export interface PickupSchedule {
 }
 
 export interface Location {
-  id: number;
+  id: string;
   name: string;
   address: string;
   phone: string;
@@ -36,233 +36,111 @@ export const categories = [
   { id: "food", name: "Food Waste", icon: Utensils },
 ];
 
-export const locations: Location[] = [
-  {
-    id: 1,
-    name: "GreenBuild Demolition Yard",
-    address: "42 Industrial Avenue, Chennai, TN 600032",
-    phone: "+91 98765 43210",
-    hours: "Mon-Sat: 8AM - 6PM",
-    type: "Demolition",
-    category: "demolition",
-    typeIcon: Building2,
-    typeColor: "bg-eco-earth/20 text-eco-earth",
-    materials: ["Concrete", "Bricks", "Steel", "Wood"],
-    lat: 13.0827,
-    lng: 80.2707,
-    description: "One of Chennai's largest demolition material recovery centers. We specialize in salvaging quality construction materials from demolished buildings for reuse in new construction projects.",
-    pickupSchedule: [
-      { day: "Monday", time: "8:00 AM - 12:00 PM", available: true },
-      { day: "Tuesday", time: "8:00 AM - 12:00 PM", available: true },
-      { day: "Wednesday", time: "2:00 PM - 6:00 PM", available: true },
-      { day: "Thursday", time: "8:00 AM - 12:00 PM", available: true },
-      { day: "Friday", time: "2:00 PM - 6:00 PM", available: true },
-      { day: "Saturday", time: "8:00 AM - 2:00 PM", available: true },
-      { day: "Sunday", time: "Closed", available: false },
-    ],
-    contactPerson: "Rajesh Kumar",
-    email: "contact@greenbuild.in",
-    capacity: "500+ tons/month",
-    nextPickup: "Tomorrow, 8:00 AM",
-  },
-  {
-    id: 2,
-    name: "Raja Coconut Center",
-    address: "15 Beach Road, Kovalam, TN 603112",
-    phone: "+91 87654 32109",
-    hours: "Daily: 6AM - 8PM",
-    type: "Coconut",
-    category: "coconut",
-    typeIcon: TreePalm,
-    typeColor: "bg-eco-leaf/20 text-eco-forest",
-    materials: ["Coconut Shells", "Husk", "Fiber", "Water"],
-    lat: 12.7872,
-    lng: 80.2556,
-    description: "Family-run coconut shop producing 200+ coconuts daily. All waste including shells, husks, and fiber are collected for conversion into eco-friendly products.",
-    pickupSchedule: [
-      { day: "Monday", time: "6:00 AM - 8:00 AM", available: true },
-      { day: "Tuesday", time: "6:00 AM - 8:00 AM", available: true },
-      { day: "Wednesday", time: "6:00 AM - 8:00 AM", available: true },
-      { day: "Thursday", time: "6:00 AM - 8:00 AM", available: true },
-      { day: "Friday", time: "6:00 AM - 8:00 AM", available: true },
-      { day: "Saturday", time: "6:00 AM - 8:00 AM", available: true },
-      { day: "Sunday", time: "7:00 AM - 9:00 AM", available: true },
-    ],
-    contactPerson: "V. Raja",
-    email: "rajacoconut@gmail.com",
-    capacity: "50 kg shells/day",
-    nextPickup: "Today, 6:00 AM",
-  },
-  {
-    id: 3,
-    name: "TechRecycle Hub",
-    address: "78 IT Park, Bangalore, KA 560066",
-    phone: "+91 76543 21098",
-    hours: "Mon-Fri: 9AM - 5PM",
-    type: "E-Waste",
-    category: "ewaste",
-    typeIcon: Laptop,
-    typeColor: "bg-blue-500/20 text-blue-700",
-    materials: ["Computers", "Phones", "Cables", "Batteries"],
-    lat: 12.9716,
-    lng: 77.5946,
-    description: "Certified e-waste recycling facility handling electronic waste from IT companies and individual consumers. Proper disposal and material recovery ensured.",
-    pickupSchedule: [
-      { day: "Monday", time: "10:00 AM - 4:00 PM", available: true },
-      { day: "Tuesday", time: "10:00 AM - 4:00 PM", available: true },
-      { day: "Wednesday", time: "10:00 AM - 4:00 PM", available: true },
-      { day: "Thursday", time: "10:00 AM - 4:00 PM", available: true },
-      { day: "Friday", time: "10:00 AM - 2:00 PM", available: true },
-      { day: "Saturday", time: "Closed", available: false },
-      { day: "Sunday", time: "Closed", available: false },
-    ],
-    contactPerson: "Anitha Sharma",
-    email: "info@techrecyclehub.com",
-    capacity: "2 tons/week",
-    nextPickup: "Monday, 10:00 AM",
-  },
-  {
-    id: 4,
-    name: "UrbanDemo Construction",
-    address: "23 Metro Junction, Hyderabad, TS 500081",
-    phone: "+91 65432 10987",
-    hours: "Mon-Sat: 7AM - 7PM",
-    type: "Demolition",
-    category: "demolition",
-    typeIcon: Building2,
-    typeColor: "bg-eco-earth/20 text-eco-earth",
-    materials: ["Rubble", "Tiles", "Iron", "Aggregates"],
-    lat: 17.3850,
-    lng: 78.4867,
-    description: "Leading demolition contractor in Hyderabad with a focus on sustainable material recovery. Our aggregates are used in road construction and new building foundations.",
-    pickupSchedule: [
-      { day: "Monday", time: "7:00 AM - 11:00 AM", available: true },
-      { day: "Tuesday", time: "3:00 PM - 7:00 PM", available: true },
-      { day: "Wednesday", time: "7:00 AM - 11:00 AM", available: true },
-      { day: "Thursday", time: "3:00 PM - 7:00 PM", available: true },
-      { day: "Friday", time: "7:00 AM - 11:00 AM", available: true },
-      { day: "Saturday", time: "7:00 AM - 1:00 PM", available: true },
-      { day: "Sunday", time: "Closed", available: false },
-    ],
-    contactPerson: "Mohammed Imran",
-    email: "urbandemo@construction.in",
-    capacity: "800+ tons/month",
-    nextPickup: "Today, 3:00 PM",
-  },
-  {
-    id: 5,
-    name: "Tender Coconut Point",
-    address: "89 Marina Beach Rd, Chennai, TN 600001",
-    phone: "+91 54321 09876",
-    hours: "Daily: 5AM - 10PM",
-    type: "Coconut",
-    category: "coconut",
-    typeIcon: TreePalm,
-    typeColor: "bg-eco-leaf/20 text-eco-forest",
-    materials: ["Fresh Shells", "Coir", "Pith", "Charcoal Base"],
-    lat: 13.0500,
-    lng: 80.2824,
-    description: "Popular beachside coconut vendor with high daily turnover. Partners with local artisans who transform coconut shells into decorative items and activated charcoal.",
-    pickupSchedule: [
-      { day: "Monday", time: "5:00 AM - 7:00 AM", available: true },
-      { day: "Tuesday", time: "5:00 AM - 7:00 AM", available: true },
-      { day: "Wednesday", time: "5:00 AM - 7:00 AM", available: true },
-      { day: "Thursday", time: "5:00 AM - 7:00 AM", available: true },
-      { day: "Friday", time: "5:00 AM - 7:00 AM", available: true },
-      { day: "Saturday", time: "5:00 AM - 7:00 AM", available: true },
-      { day: "Sunday", time: "6:00 AM - 8:00 AM", available: true },
-    ],
-    contactPerson: "S. Murugan",
-    email: "tenderpoint@gmail.com",
-    capacity: "80 kg shells/day",
-    nextPickup: "Tomorrow, 5:00 AM",
-  },
-  {
-    id: 6,
-    name: "FabricForward Collect",
-    address: "56 Textile Hub, Coimbatore, TN 641018",
-    phone: "+91 43210 98765",
-    hours: "Mon-Sat: 10AM - 6PM",
-    type: "Textile",
-    category: "textile",
-    typeIcon: Shirt,
-    typeColor: "bg-purple-500/20 text-purple-700",
-    materials: ["Cotton Waste", "Synthetic", "Denim", "Linen"],
-    lat: 11.0168,
-    lng: 76.9558,
-    description: "Collection center for textile manufacturing waste. Fabric scraps are sorted and sent to recyclers who create new yarn, insulation materials, and industrial rags.",
-    pickupSchedule: [
-      { day: "Monday", time: "10:00 AM - 2:00 PM", available: true },
-      { day: "Tuesday", time: "2:00 PM - 6:00 PM", available: true },
-      { day: "Wednesday", time: "10:00 AM - 2:00 PM", available: true },
-      { day: "Thursday", time: "2:00 PM - 6:00 PM", available: true },
-      { day: "Friday", time: "10:00 AM - 2:00 PM", available: true },
-      { day: "Saturday", time: "10:00 AM - 2:00 PM", available: true },
-      { day: "Sunday", time: "Closed", available: false },
-    ],
-    contactPerson: "Lakshmi Narayanan",
-    email: "collect@fabricforward.in",
-    capacity: "300 kg/week",
-    nextPickup: "Wednesday, 10:00 AM",
-  },
-  {
-    id: 7,
-    name: "Metro Demolition Co.",
-    address: "101 Highway Jct, Mumbai, MH 400001",
-    phone: "+91 32109 87654",
-    hours: "24/7 Operations",
-    type: "Demolition",
-    category: "demolition",
-    typeIcon: Building2,
-    typeColor: "bg-eco-earth/20 text-eco-earth",
-    materials: ["Concrete", "Glass", "Metal Scrap", "Plaster"],
-    lat: 19.0760,
-    lng: 72.8777,
-    description: "Mumbai's premier 24/7 demolition operation. We handle large-scale commercial and residential demolitions with complete material sorting and recovery systems.",
-    pickupSchedule: [
-      { day: "Monday", time: "Available 24/7", available: true },
-      { day: "Tuesday", time: "Available 24/7", available: true },
-      { day: "Wednesday", time: "Available 24/7", available: true },
-      { day: "Thursday", time: "Available 24/7", available: true },
-      { day: "Friday", time: "Available 24/7", available: true },
-      { day: "Saturday", time: "Available 24/7", available: true },
-      { day: "Sunday", time: "Available 24/7", available: true },
-    ],
-    contactPerson: "Vikram Patel",
-    email: "operations@metrodemo.com",
-    capacity: "1200+ tons/month",
-    nextPickup: "Anytime",
-  },
-  {
-    id: 8,
-    name: "BioFood Processors",
-    address: "33 Agri Zone, Pune, MH 411001",
-    phone: "+91 21098 76543",
-    hours: "Mon-Sat: 6AM - 4PM",
-    type: "Food Waste",
-    category: "food",
-    typeIcon: Utensils,
-    typeColor: "bg-amber-500/20 text-amber-700",
-    materials: ["Organic Waste", "Peels", "Scraps", "Expired Goods"],
-    lat: 18.5204,
-    lng: 73.8567,
-    description: "Food waste processing facility converting organic waste into compost and biogas. We partner with restaurants, hotels, and food manufacturers across Pune.",
-    pickupSchedule: [
-      { day: "Monday", time: "6:00 AM - 10:00 AM", available: true },
-      { day: "Tuesday", time: "6:00 AM - 10:00 AM", available: true },
-      { day: "Wednesday", time: "6:00 AM - 10:00 AM", available: true },
-      { day: "Thursday", time: "6:00 AM - 10:00 AM", available: true },
-      { day: "Friday", time: "6:00 AM - 10:00 AM", available: true },
-      { day: "Saturday", time: "6:00 AM - 10:00 AM", available: true },
-      { day: "Sunday", time: "Closed", available: false },
-    ],
-    contactPerson: "Dr. Priya Deshmukh",
-    email: "hello@biofoodprocessors.in",
-    capacity: "5 tons/day",
-    nextPickup: "Tomorrow, 6:00 AM",
-  },
+export const getIconForType = (type: string): LucideIcon => {
+  switch (type.toLowerCase()) {
+    case "demolition": return Building2;
+    case "coconut": return TreePalm;
+    case "e-waste": return Laptop;
+    case "textile": return Shirt;
+    case "food waste": return Utensils;
+    default: return Building2;
+  }
+};
+
+export const getColorForType = (type: string): string => {
+  switch (type.toLowerCase()) {
+    case "demolition": return "bg-eco-earth/20 text-eco-earth";
+    case "coconut": return "bg-eco-leaf/20 text-eco-forest";
+    case "e-waste": return "bg-blue-500/20 text-blue-700";
+    case "textile": return "bg-purple-500/20 text-purple-700";
+    case "food waste": return "bg-amber-500/20 text-amber-700";
+    default: return "bg-muted text-muted-foreground";
+  }
+};
+
+export const getCategoryForType = (type: string): string => {
+  switch (type.toLowerCase()) {
+    case "demolition": return "demolition";
+    case "coconut": return "coconut";
+    case "e-waste": return "ewaste";
+    case "textile": return "textile";
+    case "food waste": return "food";
+    default: return "all";
+  }
+};
+
+const defaultSchedule: PickupSchedule[] = [
+  { day: "Monday", time: "8:00 AM - 6:00 PM", available: true },
+  { day: "Tuesday", time: "8:00 AM - 6:00 PM", available: true },
+  { day: "Wednesday", time: "8:00 AM - 6:00 PM", available: true },
+  { day: "Thursday", time: "8:00 AM - 6:00 PM", available: true },
+  { day: "Friday", time: "8:00 AM - 6:00 PM", available: true },
+  { day: "Saturday", time: "8:00 AM - 2:00 PM", available: true },
+  { day: "Sunday", time: "Closed", available: false },
 ];
 
-export const getLocationById = (id: number): Location | undefined => {
+export const locations: Location[] = [
+  // Demolition Sites (10)
+  { id: "d1", name: "GreenBuild Demolition Yard", address: "42 Industrial Avenue, Chennai, TN 600032", phone: "+91 98765 43210", hours: "Mon-Sat: 8AM - 6PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Concrete", "Bricks", "Steel", "Wood"], lat: 13.0827, lng: 80.2707, description: "Chennai's largest demolition material recovery center.", pickupSchedule: defaultSchedule, contactPerson: "Rajesh Kumar", email: "contact@greenbuild.in", capacity: "500+ tons/month", nextPickup: "Tomorrow, 8:00 AM" },
+  { id: "d2", name: "UrbanDemo Construction", address: "23 Metro Junction, Hyderabad, TS 500081", phone: "+91 65432 10987", hours: "Mon-Sat: 7AM - 7PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Rubble", "Tiles", "Iron", "Aggregates"], lat: 17.3850, lng: 78.4867, description: "Sustainable material recovery specialists in Hyderabad.", pickupSchedule: defaultSchedule, contactPerson: "Mohammed Imran", email: "urbandemo@construction.in", capacity: "800+ tons/month", nextPickup: "Today, 3:00 PM" },
+  { id: "d3", name: "Metro Demolition Co.", address: "101 Highway Jct, Mumbai, MH 400001", phone: "+91 32109 87654", hours: "24/7 Operations", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Concrete", "Glass", "Metal Scrap", "Plaster"], lat: 19.0760, lng: 72.8777, description: "Mumbai's premier 24/7 demolition operation.", pickupSchedule: defaultSchedule, contactPerson: "Vikram Patel", email: "operations@metrodemo.com", capacity: "1200+ tons/month", nextPickup: "Anytime" },
+  { id: "d4", name: "Kolkata Salvage Works", address: "67 Park Street, Kolkata, WB 700016", phone: "+91 33456 78901", hours: "Mon-Sat: 9AM - 5PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Heritage Bricks", "Teak Wood", "Iron Gates", "Stone"], lat: 22.5726, lng: 88.3639, description: "Specializing in heritage building material salvage.", pickupSchedule: defaultSchedule, contactPerson: "Amit Roy", email: "salvage@kolkata.in", capacity: "300+ tons/month", nextPickup: "Monday, 9:00 AM" },
+  { id: "d5", name: "Delhi NCR Demo Hub", address: "45 Noida Expressway, Delhi NCR 201301", phone: "+91 11234 56789", hours: "Mon-Sun: 6AM - 10PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["RCC", "TMT Steel", "Marble", "Sand"], lat: 28.5355, lng: 77.3910, description: "NCR's largest demolition waste processing facility.", pickupSchedule: defaultSchedule, contactPerson: "Suresh Gupta", email: "hub@delhidemo.in", capacity: "1500+ tons/month", nextPickup: "Today, 6:00 AM" },
+  { id: "d6", name: "Ahmedabad Green Demo", address: "89 SG Highway, Ahmedabad, GJ 380054", phone: "+91 79123 45678", hours: "Mon-Sat: 8AM - 6PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Concrete Blocks", "AAC Blocks", "Steel", "Copper Wire"], lat: 23.0225, lng: 72.5714, description: "Eco-friendly demolition practices in Gujarat.", pickupSchedule: defaultSchedule, contactPerson: "Hitesh Patel", email: "green@ahmedabaddemo.in", capacity: "600+ tons/month", nextPickup: "Tomorrow, 8:00 AM" },
+  { id: "d7", name: "Jaipur Heritage Salvage", address: "12 MI Road, Jaipur, RJ 302001", phone: "+91 14123 45678", hours: "Mon-Sat: 9AM - 5PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Sandstone", "Marble", "Brass Fittings", "Carved Wood"], lat: 26.9124, lng: 75.7873, description: "Heritage material specialists from Rajasthan.", pickupSchedule: defaultSchedule, contactPerson: "Rakesh Sharma", email: "heritage@jaipursalvage.in", capacity: "200+ tons/month", nextPickup: "Wednesday, 9:00 AM" },
+  { id: "d8", name: "Kochi Coastal Demo", address: "34 Marine Drive, Kochi, KL 682031", phone: "+91 48412 34567", hours: "Mon-Sat: 7AM - 5PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Laterite", "Concrete", "Teak", "Tiles"], lat: 9.9312, lng: 76.2673, description: "Coastal construction material recovery center.", pickupSchedule: defaultSchedule, contactPerson: "Thomas Mathew", email: "coastal@kochidemo.in", capacity: "400+ tons/month", nextPickup: "Friday, 7:00 AM" },
+  { id: "d9", name: "Lucknow Demo Works", address: "56 Hazratganj, Lucknow, UP 226001", phone: "+91 52212 34567", hours: "Mon-Sat: 8AM - 6PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Bricks", "Cement", "Iron Rods", "Glass"], lat: 26.8467, lng: 80.9462, description: "North India's trusted demolition partner.", pickupSchedule: defaultSchedule, contactPerson: "Pradeep Singh", email: "works@lucknowdemo.in", capacity: "450+ tons/month", nextPickup: "Tomorrow, 8:00 AM" },
+  { id: "d10", name: "Surat Demo Solutions", address: "78 Ring Road, Surat, GJ 395002", phone: "+91 26112 34567", hours: "Mon-Sat: 7AM - 7PM", type: "Demolition", category: "demolition", typeIcon: Building2, typeColor: "bg-eco-earth/20 text-eco-earth", materials: ["Concrete", "Bricks", "Steel", "Aluminum"], lat: 21.1702, lng: 72.8311, description: "Complete demolition and recycling solutions.", pickupSchedule: defaultSchedule, contactPerson: "Jayesh Desai", email: "solutions@suratdemo.in", capacity: "550+ tons/month", nextPickup: "Today, 7:00 AM" },
+
+  // Coconut Shops (10)
+  { id: "c1", name: "Raja Coconut Center", address: "15 Beach Road, Kovalam, TN 603112", phone: "+91 87654 32109", hours: "Daily: 6AM - 8PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Coconut Shells", "Husk", "Fiber", "Water"], lat: 12.7872, lng: 80.2556, description: "Family-run coconut shop producing 200+ coconuts daily.", pickupSchedule: defaultSchedule, contactPerson: "V. Raja", email: "rajacoconut@gmail.com", capacity: "50 kg shells/day", nextPickup: "Today, 6:00 AM" },
+  { id: "c2", name: "Tender Coconut Point", address: "89 Marina Beach Rd, Chennai, TN 600001", phone: "+91 54321 09876", hours: "Daily: 5AM - 10PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Fresh Shells", "Coir", "Pith", "Charcoal Base"], lat: 13.0500, lng: 80.2824, description: "Popular beachside coconut vendor.", pickupSchedule: defaultSchedule, contactPerson: "S. Murugan", email: "tenderpoint@gmail.com", capacity: "80 kg shells/day", nextPickup: "Tomorrow, 5:00 AM" },
+  { id: "c3", name: "Goa Beach Nariyal", address: "23 Calangute Beach, Goa 403516", phone: "+91 83212 34567", hours: "Daily: 7AM - 9PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Shells", "Husk", "Malai", "Water"], lat: 15.5449, lng: 73.7550, description: "Beachfront coconut stall with high tourist traffic.", pickupSchedule: defaultSchedule, contactPerson: "Anthony Fernandes", email: "goanariyal@gmail.com", capacity: "100 kg shells/day", nextPickup: "Daily, 7:00 AM" },
+  { id: "c4", name: "Kerala Coconut Paradise", address: "45 Kovalam Beach, Trivandrum, KL 695527", phone: "+91 47112 34567", hours: "Daily: 6AM - 8PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Virgin Shells", "Coir Fiber", "Husk Chips", "Coconut Cream"], lat: 8.3988, lng: 76.9820, description: "Premium coconut products from God's own country.", pickupSchedule: defaultSchedule, contactPerson: "Sreekumar Nair", email: "paradise@keralacoconut.in", capacity: "120 kg shells/day", nextPickup: "Today, 6:00 AM" },
+  { id: "c5", name: "Mumbai Nariyal House", address: "67 Juhu Beach, Mumbai, MH 400049", phone: "+91 22123 45678", hours: "Daily: 8AM - 10PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Shells", "Husk", "Water", "Cream"], lat: 19.0948, lng: 72.8258, description: "Juhu's favorite coconut destination.", pickupSchedule: defaultSchedule, contactPerson: "Ramesh Yadav", email: "juhu@nariyalhouse.in", capacity: "90 kg shells/day", nextPickup: "Tomorrow, 8:00 AM" },
+  { id: "c6", name: "Pondicherry Coco Corner", address: "12 Promenade Beach, Puducherry 605001", phone: "+91 41312 34567", hours: "Daily: 6AM - 9PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Shells", "Fiber", "Husk", "Tender Water"], lat: 11.9139, lng: 79.8145, description: "French town's coconut specialist.", pickupSchedule: defaultSchedule, contactPerson: "Pierre Kumar", email: "coco@pondycorner.in", capacity: "60 kg shells/day", nextPickup: "Today, 6:00 AM" },
+  { id: "c7", name: "Vizag Coastal Coconuts", address: "34 RK Beach, Visakhapatnam, AP 530002", phone: "+91 89112 34567", hours: "Daily: 7AM - 8PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Shells", "Coir", "Husk", "Water"], lat: 17.7041, lng: 83.2977, description: "Andhra's premier coconut supplier.", pickupSchedule: defaultSchedule, contactPerson: "Srinivas Rao", email: "coastal@vizagcoconuts.in", capacity: "70 kg shells/day", nextPickup: "Daily, 7:00 AM" },
+  { id: "c8", name: "Mangalore Tender King", address: "56 Panambur Beach, Mangalore, KA 575010", phone: "+91 82412 34567", hours: "Daily: 6AM - 7PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Premium Shells", "Husk", "Fiber", "Cream"], lat: 12.9299, lng: 74.8376, description: "Karnataka's finest tender coconuts.", pickupSchedule: defaultSchedule, contactPerson: "Uday Shetty", email: "king@mangalorecoconut.in", capacity: "85 kg shells/day", nextPickup: "Today, 6:00 AM" },
+  { id: "c9", name: "Andaman Coco Fresh", address: "78 Corbyn's Cove, Port Blair, AN 744101", phone: "+91 31912 34567", hours: "Daily: 8AM - 6PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Island Shells", "Coir", "Husk", "Fresh Water"], lat: 11.6234, lng: 92.7265, description: "Fresh island coconuts from Andaman.", pickupSchedule: defaultSchedule, contactPerson: "Rajiv Barua", email: "fresh@andamancoconut.in", capacity: "40 kg shells/day", nextPickup: "Tomorrow, 8:00 AM" },
+  { id: "c10", name: "Digha Beach Nariyal", address: "90 Sea Beach, Digha, WB 721428", phone: "+91 32212 34567", hours: "Daily: 7AM - 8PM", type: "Coconut", category: "coconut", typeIcon: TreePalm, typeColor: "bg-eco-leaf/20 text-eco-forest", materials: ["Shells", "Husk", "Coir", "Malai"], lat: 21.6278, lng: 87.5089, description: "Bengal's favorite beach coconut spot.", pickupSchedule: defaultSchedule, contactPerson: "Sudipto Das", email: "beach@dighanariyal.in", capacity: "55 kg shells/day", nextPickup: "Daily, 7:00 AM" },
+
+  // E-Waste (10)
+  { id: "e1", name: "TechRecycle Hub", address: "78 IT Park, Bangalore, KA 560066", phone: "+91 76543 21098", hours: "Mon-Fri: 9AM - 5PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Computers", "Phones", "Cables", "Batteries"], lat: 12.9716, lng: 77.5946, description: "Certified e-waste recycling facility.", pickupSchedule: defaultSchedule, contactPerson: "Anitha Sharma", email: "info@techrecyclehub.com", capacity: "2 tons/week", nextPickup: "Monday, 10:00 AM" },
+  { id: "e2", name: "GreenChip Electronics", address: "45 Cyber City, Gurgaon, HR 122002", phone: "+91 12412 34567", hours: "Mon-Sat: 10AM - 6PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Laptops", "Servers", "Printers", "UPS"], lat: 28.4595, lng: 77.0266, description: "Corporate e-waste management specialists.", pickupSchedule: defaultSchedule, contactPerson: "Rohit Malhotra", email: "corporate@greenchip.in", capacity: "5 tons/week", nextPickup: "Wednesday, 10:00 AM" },
+  { id: "e3", name: "Chennai E-Cycle Center", address: "23 Tidel Park, Chennai, TN 600113", phone: "+91 44123 45678", hours: "Mon-Fri: 9AM - 6PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["IT Equipment", "Monitors", "Keyboards", "Mice"], lat: 12.9855, lng: 80.2413, description: "South India's leading e-waste processor.", pickupSchedule: defaultSchedule, contactPerson: "Karthik Rajan", email: "center@chennaiecycle.in", capacity: "3 tons/week", nextPickup: "Tuesday, 9:00 AM" },
+  { id: "e4", name: "Mumbai Tech Reclaim", address: "67 BKC, Mumbai, MH 400051", phone: "+91 22234 56789", hours: "Mon-Sat: 9AM - 7PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Mobile Phones", "Tablets", "Wearables", "Chargers"], lat: 19.0596, lng: 72.8656, description: "Consumer electronics recycling hub.", pickupSchedule: defaultSchedule, contactPerson: "Priya Mehta", email: "reclaim@mumbaitech.in", capacity: "4 tons/week", nextPickup: "Thursday, 9:00 AM" },
+  { id: "e5", name: "Hyderabad Circuit Board", address: "89 HITEC City, Hyderabad, TS 500081", phone: "+91 40123 45678", hours: "Mon-Fri: 10AM - 5PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["PCBs", "Hard Drives", "RAMs", "Processors"], lat: 17.4435, lng: 78.3772, description: "Component-level e-waste recovery.", pickupSchedule: defaultSchedule, contactPerson: "Venkat Reddy", email: "circuit@hyderabadboard.in", capacity: "1.5 tons/week", nextPickup: "Monday, 10:00 AM" },
+  { id: "e6", name: "Pune Digital Waste", address: "12 Hinjewadi Phase 2, Pune, MH 411057", phone: "+91 20123 45678", hours: "Mon-Sat: 9AM - 6PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Networking Equipment", "Routers", "Switches", "Cables"], lat: 18.5912, lng: 73.7380, description: "IT infrastructure recycling specialists.", pickupSchedule: defaultSchedule, contactPerson: "Amit Kulkarni", email: "digital@punewaste.in", capacity: "2.5 tons/week", nextPickup: "Friday, 9:00 AM" },
+  { id: "e7", name: "Kolkata E-Green", address: "34 Salt Lake Sector V, Kolkata, WB 700091", phone: "+91 33234 56789", hours: "Mon-Fri: 10AM - 5PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Computers", "Printers", "Scanners", "Fax Machines"], lat: 22.5697, lng: 88.4298, description: "Eastern India's e-waste solution.", pickupSchedule: defaultSchedule, contactPerson: "Debashish Ghosh", email: "green@kolkatae.in", capacity: "1.8 tons/week", nextPickup: "Wednesday, 10:00 AM" },
+  { id: "e8", name: "Noida Tech Disposal", address: "56 Sector 62, Noida, UP 201301", phone: "+91 12034 56789", hours: "Mon-Sat: 9AM - 6PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Office Electronics", "Air Conditioners", "Refrigerators", "Washing Machines"], lat: 28.6273, lng: 77.3714, description: "Large appliance e-waste handling.", pickupSchedule: defaultSchedule, contactPerson: "Sanjay Agarwal", email: "disposal@noidatech.in", capacity: "6 tons/week", nextPickup: "Tuesday, 9:00 AM" },
+  { id: "e9", name: "Ahmedabad Electro Recycle", address: "78 GIFT City, Gandhinagar, GJ 382355", phone: "+91 79234 56789", hours: "Mon-Fri: 9AM - 5PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Solar Panels", "Inverters", "Batteries", "LED Lights"], lat: 23.1171, lng: 72.5797, description: "Renewable energy equipment recycling.", pickupSchedule: defaultSchedule, contactPerson: "Chirag Shah", email: "electro@aaborecycle.in", capacity: "2 tons/week", nextPickup: "Thursday, 9:00 AM" },
+  { id: "e10", name: "Coimbatore E-Solutions", address: "90 ELCOT IT Park, Coimbatore, TN 641014", phone: "+91 42234 56789", hours: "Mon-Sat: 10AM - 5PM", type: "E-Waste", category: "ewaste", typeIcon: Laptop, typeColor: "bg-blue-500/20 text-blue-700", materials: ["Industrial Electronics", "PLCs", "Motors", "Sensors"], lat: 11.0549, lng: 76.9655, description: "Industrial e-waste specialists.", pickupSchedule: defaultSchedule, contactPerson: "Senthil Kumar", email: "solutions@cbeewaste.in", capacity: "3 tons/week", nextPickup: "Monday, 10:00 AM" },
+
+  // Textile (10)
+  { id: "t1", name: "FabricForward Collect", address: "56 Textile Hub, Coimbatore, TN 641018", phone: "+91 43210 98765", hours: "Mon-Sat: 10AM - 6PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Cotton Waste", "Synthetic", "Denim", "Linen"], lat: 11.0168, lng: 76.9558, description: "Textile manufacturing waste collection.", pickupSchedule: defaultSchedule, contactPerson: "Lakshmi Narayanan", email: "collect@fabricforward.in", capacity: "300 kg/week", nextPickup: "Wednesday, 10:00 AM" },
+  { id: "t2", name: "Surat Fabric Recycle", address: "23 Ring Road, Surat, GJ 395002", phone: "+91 26112 34567", hours: "Mon-Sat: 9AM - 7PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Silk Waste", "Polyester", "Saree Cuts", "Embroidery Scraps"], lat: 21.1702, lng: 72.8311, description: "India's textile capital waste hub.", pickupSchedule: defaultSchedule, contactPerson: "Mukesh Patel", email: "recycle@suratfabric.in", capacity: "500 kg/week", nextPickup: "Daily, 9:00 AM" },
+  { id: "t3", name: "Tirupur Garment Waste", address: "45 Kamaraj Road, Tirupur, TN 641604", phone: "+91 42112 34567", hours: "Mon-Sat: 8AM - 6PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Knitted Waste", "Hosiery", "T-Shirt Cuts", "Yarn Waste"], lat: 11.1085, lng: 77.3411, description: "Knitwear hub waste management.", pickupSchedule: defaultSchedule, contactPerson: "Gopalakrishnan", email: "waste@tirupurgarment.in", capacity: "800 kg/week", nextPickup: "Tuesday, 8:00 AM" },
+  { id: "t4", name: "Mumbai Fashion Reclaim", address: "67 Lower Parel, Mumbai, MH 400013", phone: "+91 22345 67890", hours: "Mon-Sat: 10AM - 6PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Designer Scraps", "Leather Cuts", "Beading Waste", "Zipper Pulls"], lat: 19.0075, lng: 72.8319, description: "Fashion industry waste collection.", pickupSchedule: defaultSchedule, contactPerson: "Neha Kapoor", email: "reclaim@mumbaifashion.in", capacity: "250 kg/week", nextPickup: "Thursday, 10:00 AM" },
+  { id: "t5", name: "Ludhiana Woolen Waste", address: "89 Focal Point, Ludhiana, PB 141001", phone: "+91 16112 34567", hours: "Mon-Sat: 9AM - 5PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Woolen Waste", "Acrylic Yarn", "Sweater Cuts", "Shoddy"], lat: 30.9010, lng: 75.8573, description: "Woolen textile waste specialists.", pickupSchedule: defaultSchedule, contactPerson: "Harpreet Singh", email: "woolen@ludhianawaste.in", capacity: "400 kg/week", nextPickup: "Monday, 9:00 AM" },
+  { id: "t6", name: "Bengaluru Denim Hub", address: "12 Peenya Industrial, Bangalore, KA 560058", phone: "+91 80123 45678", hours: "Mon-Sat: 8AM - 5PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Denim Scraps", "Jeans Cuts", "Selvedge Waste", "Indigo Rags"], lat: 13.0358, lng: 77.5151, description: "Denim manufacturing waste recycling.", pickupSchedule: defaultSchedule, contactPerson: "Ravi Shankar", email: "denim@bangalorehub.in", capacity: "350 kg/week", nextPickup: "Wednesday, 8:00 AM" },
+  { id: "t7", name: "Delhi Cloth Market", address: "34 Chandni Chowk, Delhi 110006", phone: "+91 11234 56789", hours: "Mon-Sat: 11AM - 8PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Cotton Cuts", "Silk Remnants", "Mixed Fabrics", "Trims"], lat: 28.6506, lng: 77.2302, description: "Historic market's fabric waste center.", pickupSchedule: defaultSchedule, contactPerson: "Anil Jain", email: "market@delhicloth.in", capacity: "600 kg/week", nextPickup: "Daily, 11:00 AM" },
+  { id: "t8", name: "Ahmedabad Cotton Collect", address: "56 Ashram Road, Ahmedabad, GJ 380009", phone: "+91 79345 67890", hours: "Mon-Sat: 9AM - 6PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Cotton Waste", "Ginning Waste", "Bales", "Comber Noil"], lat: 23.0296, lng: 72.5679, description: "Cotton processing waste management.", pickupSchedule: defaultSchedule, contactPerson: "Jigar Mehta", email: "cotton@aaborecollect.in", capacity: "700 kg/week", nextPickup: "Tuesday, 9:00 AM" },
+  { id: "t9", name: "Kolkata Jute Works", address: "78 Howrah, Kolkata, WB 711101", phone: "+91 33345 67890", hours: "Mon-Sat: 8AM - 4PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Jute Waste", "Burlap Scraps", "Twine", "Hessian Cuts"], lat: 22.5958, lng: 88.2636, description: "Traditional jute waste recycling.", pickupSchedule: defaultSchedule, contactPerson: "Tapan Banerjee", email: "jute@kolkataworks.in", capacity: "450 kg/week", nextPickup: "Friday, 8:00 AM" },
+  { id: "t10", name: "Panipat Recycled Yarn", address: "90 GT Road, Panipat, HR 132103", phone: "+91 18012 34567", hours: "Mon-Sat: 7AM - 5PM", type: "Textile", category: "textile", typeIcon: Shirt, typeColor: "bg-purple-500/20 text-purple-700", materials: ["Recycled Cotton", "Blended Yarn", "Rags", "Blanket Waste"], lat: 29.3909, lng: 76.9635, description: "Recycled yarn production hub.", pickupSchedule: defaultSchedule, contactPerson: "Sunil Bansal", email: "yarn@panipat.in", capacity: "1000 kg/week", nextPickup: "Daily, 7:00 AM" },
+
+  // Food Waste (10)
+  { id: "f1", name: "BioFood Processors", address: "33 Agri Zone, Pune, MH 411001", phone: "+91 21098 76543", hours: "Mon-Sat: 6AM - 4PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Organic Waste", "Peels", "Scraps", "Expired Goods"], lat: 18.5204, lng: 73.8567, description: "Food waste to compost and biogas.", pickupSchedule: defaultSchedule, contactPerson: "Dr. Priya Deshmukh", email: "hello@biofoodprocessors.in", capacity: "5 tons/day", nextPickup: "Tomorrow, 6:00 AM" },
+  { id: "f2", name: "Chennai Compost King", address: "45 Anna Nagar, Chennai, TN 600040", phone: "+91 44234 56789", hours: "Daily: 5AM - 3PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Kitchen Waste", "Restaurant Waste", "Fruit Peels", "Vegetable Scraps"], lat: 13.0850, lng: 80.2101, description: "Commercial kitchen waste specialists.", pickupSchedule: defaultSchedule, contactPerson: "Murali", email: "compost@chennaiking.in", capacity: "3 tons/day", nextPickup: "Daily, 5:00 AM" },
+  { id: "f3", name: "Mumbai Green Bin", address: "67 Andheri East, Mumbai, MH 400069", phone: "+91 22456 78901", hours: "Daily: 6AM - 2PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Hotel Waste", "Canteen Waste", "Bakery Waste", "Dairy Waste"], lat: 19.1136, lng: 72.8697, description: "Hotel and restaurant waste collection.", pickupSchedule: defaultSchedule, contactPerson: "Farhan Sheikh", email: "green@mumbaibin.in", capacity: "8 tons/day", nextPickup: "Today, 6:00 AM" },
+  { id: "f4", name: "Bangalore Bio Convert", address: "89 Whitefield, Bangalore, KA 560066", phone: "+91 80345 67890", hours: "Mon-Sat: 7AM - 3PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Tech Park Waste", "Cafeteria Waste", "Coffee Grounds", "Food Court Waste"], lat: 12.9698, lng: 77.7500, description: "Corporate campus food waste.", pickupSchedule: defaultSchedule, contactPerson: "Deepa Rao", email: "bio@bangaloreconvert.in", capacity: "4 tons/day", nextPickup: "Monday, 7:00 AM" },
+  { id: "f5", name: "Delhi NCR Organic Hub", address: "12 Ghaziabad, Delhi NCR 201001", phone: "+91 12045 67890", hours: "Daily: 4AM - 12PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Market Waste", "Mandi Waste", "Wholesale Scraps", "Unsold Produce"], lat: 28.6692, lng: 77.4538, description: "Wholesale market waste processing.", pickupSchedule: defaultSchedule, contactPerson: "Ramesh Tyagi", email: "organic@delhihub.in", capacity: "10 tons/day", nextPickup: "Daily, 4:00 AM" },
+  { id: "f6", name: "Hyderabad Green Matter", address: "34 Jubilee Hills, Hyderabad, TS 500033", phone: "+91 40456 78901", hours: "Mon-Sat: 6AM - 2PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Biryani Waste", "Restaurant Scraps", "Catering Waste", "Event Waste"], lat: 17.4326, lng: 78.4071, description: "Catering and event waste specialists.", pickupSchedule: defaultSchedule, contactPerson: "Fatima Begum", email: "matter@hydgreeen.in", capacity: "6 tons/day", nextPickup: "Tomorrow, 6:00 AM" },
+  { id: "f7", name: "Kolkata Organic Cycle", address: "56 Salt Lake, Kolkata, WB 700064", phone: "+91 33456 78901", hours: "Daily: 5AM - 1PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Sweet Shop Waste", "Restaurant Waste", "Fish Market Waste", "Vegetable Waste"], lat: 22.5874, lng: 88.4171, description: "Eastern India food waste leader.", pickupSchedule: defaultSchedule, contactPerson: "Arnab Sen", email: "cycle@kolkataorganic.in", capacity: "4 tons/day", nextPickup: "Today, 5:00 AM" },
+  { id: "f8", name: "Ahmedabad Food Cycle", address: "78 SG Highway, Ahmedabad, GJ 380054", phone: "+91 79567 89012", hours: "Daily: 6AM - 2PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Thali Waste", "Street Food Waste", "Dhaba Waste", "Temple Prasad"], lat: 23.0369, lng: 72.5122, description: "Gujarat's food waste management.", pickupSchedule: defaultSchedule, contactPerson: "Bhavesh Oza", email: "food@aaborecycle.in", capacity: "5 tons/day", nextPickup: "Daily, 6:00 AM" },
+  { id: "f9", name: "Jaipur Compost Works", address: "90 Vaishali Nagar, Jaipur, RJ 302021", phone: "+91 14167 89012", hours: "Mon-Sat: 5AM - 1PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Hostel Waste", "College Canteen", "Marriage Hall Waste", "Party Waste"], lat: 26.9110, lng: 75.7391, description: "Institutional food waste processing.", pickupSchedule: defaultSchedule, contactPerson: "Vikram Rathore", email: "compost@jaipurworks.in", capacity: "7 tons/day", nextPickup: "Tomorrow, 5:00 AM" },
+  { id: "f10", name: "Kochi Green Kitchen", address: "23 Marine Drive, Kochi, KL 682031", phone: "+91 48478 90123", hours: "Daily: 6AM - 2PM", type: "Food Waste", category: "food", typeIcon: Utensils, typeColor: "bg-amber-500/20 text-amber-700", materials: ["Seafood Waste", "Coconut Scraps", "Spice Waste", "Rice Mill Waste"], lat: 9.9816, lng: 76.2999, description: "Kerala's sustainable food waste hub.", pickupSchedule: defaultSchedule, contactPerson: "George Mathew", email: "green@kochikitchen.in", capacity: "3 tons/day", nextPickup: "Today, 6:00 AM" },
+];
+
+export const getLocationById = (id: string): Location | undefined => {
   return locations.find((loc) => loc.id === id);
 };

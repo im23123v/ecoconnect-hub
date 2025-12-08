@@ -1,17 +1,51 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { LocationCard } from "./LocationCard";
 import { Button } from "./ui/button";
-import { locations, categories } from "@/data/locations";
+import { locations, categories, Location, getIconForType, getColorForType, getCategoryForType } from "@/data/locations";
+import { supabase } from "@/integrations/supabase/client";
 
 export const LocationsSection = () => {
   const [activeCategory, setActiveCategory] = useState("all");
+  const [dbLocations, setDbLocations] = useState<Location[]>([]);
+
+  useEffect(() => {
+    const fetchDbLocations = async () => {
+      const { data } = await supabase.from("locations").select("*");
+      if (data) {
+        const mapped = data.map((loc: any) => ({
+          id: loc.id,
+          name: loc.name,
+          address: loc.address,
+          phone: loc.phone,
+          hours: loc.hours,
+          type: loc.type,
+          category: getCategoryForType(loc.type),
+          typeIcon: getIconForType(loc.type),
+          typeColor: getColorForType(loc.type),
+          materials: loc.materials || [],
+          lat: parseFloat(loc.lat),
+          lng: parseFloat(loc.lng),
+          description: loc.description || "",
+          pickupSchedule: loc.pickup_schedule || [],
+          contactPerson: loc.contact_person || "",
+          email: loc.email || "",
+          capacity: "",
+          nextPickup: ""
+        }));
+        setDbLocations(mapped);
+      }
+    };
+    fetchDbLocations();
+  }, []);
+
+  const allLocations = [...locations, ...dbLocations];
 
   const filteredLocations =
     activeCategory === "all"
-      ? locations
-      : locations.filter((loc) => loc.category === activeCategory);
+      ? allLocations
+      : allLocations.filter((loc) => loc.category === activeCategory);
 
   return (
     <section id="locations" className="py-24 bg-eco-cream">
