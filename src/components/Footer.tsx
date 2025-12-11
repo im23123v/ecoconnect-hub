@@ -1,18 +1,19 @@
 import { motion } from "framer-motion";
-import { Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Leaf, Mail, Phone, MapPin, Facebook, Twitter, Instagram, Linkedin, Code2 } from "lucide-react";
 
 const footerLinks = {
   company: [
-    { name: "About Us", href: "#about" },
-    { name: "Our Mission", href: "#" },
-    { name: "Team", href: "#" },
-    { name: "Careers", href: "#" },
+    { name: "About Us", href: "/about" },
+    { name: "Our Impact", href: "/impact" },
+    { name: "Join Network", href: "/join-network" },
+    { name: "Locations", href: "/locations-map" },
   ],
   resources: [
-    { name: "Blog", href: "#" },
-    { name: "Case Studies", href: "#" },
-    { name: "Documentation", href: "#" },
-    { name: "FAQs", href: "#" },
+    { name: "Guides", href: "/resources" },
+    { name: "FAQs", href: "/resources" },
+    { name: "Waste Categories", href: "/impact" },
+    { name: "Tips", href: "/resources" },
   ],
   legal: [
     { name: "Privacy Policy", href: "#" },
@@ -51,6 +52,18 @@ export const Footer = () => {
                 Building a sustainable future by connecting waste producers with recyclers. 
                 Every piece of waste is a resource waiting to be discovered.
               </p>
+              
+              {/* Hackathon Badge */}
+              <div className="bg-primary-foreground/10 rounded-xl p-4 mb-6">
+                <div className="flex items-center gap-2 mb-2">
+                  <Code2 className="w-4 h-4 text-accent" />
+                  <span className="text-sm font-semibold text-accent">Hackathon Project</span>
+                </div>
+                <p className="text-sm text-primary-foreground/70">
+                  Developed by <span className="font-semibold text-primary-foreground">Team BitwiseBinary</span> at St. Peter's Engineering College Hackathon
+                </p>
+              </div>
+
               <div className="space-y-3">
                 <div className="flex items-center gap-3 text-sm text-primary-foreground/70">
                   <Mail className="w-4 h-4" />
@@ -62,7 +75,7 @@ export const Footer = () => {
                 </div>
                 <div className="flex items-center gap-3 text-sm text-primary-foreground/70">
                   <MapPin className="w-4 h-4" />
-                  <span>Chennai, Tamil Nadu, India</span>
+                  <span>Hyderabad, Telangana, India</span>
                 </div>
               </div>
             </motion.div>
@@ -79,9 +92,9 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  <Link to={link.href} className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -97,9 +110,9 @@ export const Footer = () => {
             <ul className="space-y-3">
               {footerLinks.resources.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
+                  <Link to={link.href} className="text-sm text-primary-foreground/70 hover:text-primary-foreground transition-colors">
                     {link.name}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -132,9 +145,14 @@ export const Footer = () => {
           viewport={{ once: true }}
           className="mt-12 pt-8 border-t border-primary-foreground/10 flex flex-col sm:flex-row items-center justify-between gap-4"
         >
-          <p className="text-sm text-primary-foreground/60">
-            © 2024 EcoConnect. All rights reserved. Made with 💚 for the planet.
-          </p>
+          <div className="text-center sm:text-left">
+            <p className="text-sm text-primary-foreground/60">
+              © 2024 EcoConnect. All rights reserved. Made with 💚 for the planet.
+            </p>
+            <p className="text-xs text-primary-foreground/40 mt-1">
+              A project by Team BitwiseBinary • St. Peter's Engineering College Hackathon
+            </p>
+          </div>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (
               <a

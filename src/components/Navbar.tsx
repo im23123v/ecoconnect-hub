@@ -5,10 +5,10 @@ import { Leaf, Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 
 const navLinks = [
-  { name: "Locations", href: "#locations" },
-  { name: "How It Works", href: "#how-it-works" },
-  { name: "Partners", href: "#partners" },
-  { name: "About", href: "#about" },
+  { name: "Locations", href: "/locations-map", isRoute: true },
+  { name: "Impact", href: "/impact", isRoute: true },
+  { name: "Resources", href: "/resources", isRoute: true },
+  { name: "About", href: "/about", isRoute: true },
 ];
 
 export const Navbar = () => {
@@ -33,14 +33,15 @@ export const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <motion.a
+              <Link
                 key={link.name}
-                href={link.href}
+                to={link.href}
                 className="text-muted-foreground hover:text-foreground transition-colors font-medium"
-                whileHover={{ y: -2 }}
               >
-                {link.name}
-              </motion.a>
+                <motion.span whileHover={{ y: -2 }} className="inline-block">
+                  {link.name}
+                </motion.span>
+              </Link>
             ))}
           </div>
 
@@ -74,14 +75,14 @@ export const Navbar = () => {
           >
             <div className="px-4 py-4 space-y-3">
               {navLinks.map((link) => (
-                <a
+                <Link
                   key={link.name}
-                  href={link.href}
+                  to={link.href}
                   className="block py-2 text-muted-foreground hover:text-foreground transition-colors font-medium"
                   onClick={() => setIsOpen(false)}
                 >
                   {link.name}
-                </a>
+                </Link>
               ))}
               <Link to="/join-network">
                 <Button variant="hero" size="lg" className="w-full mt-4">
