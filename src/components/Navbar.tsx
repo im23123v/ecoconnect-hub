@@ -1,54 +1,72 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Leaf, Menu, X } from "lucide-react";
 import { Button } from "./ui/button";
 
 const navLinks = [
-  { name: "Locations", href: "/locations-map", isRoute: true },
-  { name: "Impact", href: "/impact", isRoute: true },
-  { name: "Resources", href: "/resources", isRoute: true },
-  { name: "About", href: "/about", isRoute: true },
+  { name: "Locations", href: "/locations-map" },
+  { name: "Impact", href: "/impact" },
+  { name: "Resources", href: "/resources" },
+  { name: "About", href: "/about" },
 ];
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-200 ${
+      scrolled 
+        ? "bg-background/95 backdrop-blur-md border-b border-border shadow-soft" 
+        : "bg-background/80 backdrop-blur-lg border-b border-border"
+    }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <motion.a 
-            href="#"
-            className="flex items-center gap-2"
-            whileHover={{ scale: 1.02 }}
-          >
-            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-soft">
+          <Link to="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-hero flex items-center justify-center shadow-soft transition-transform duration-200 group-hover:scale-105">
               <Leaf className="w-5 h-5 text-primary-foreground" />
             </div>
             <span className="text-xl font-bold text-foreground">EcoConnect</span>
-          </motion.a>
+          </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors font-medium"
-              >
-                <motion.span whileHover={{ y: -2 }} className="inline-block">
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const isActive = location.pathname === link.href;
+              return (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`px-4 py-2 rounded-lg font-medium transition-all duration-200 ${
+                    isActive 
+                      ? "text-primary bg-primary/10" 
+                      : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                  }`}
+                >
                   {link.name}
-                </motion.span>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
 
           {/* CTA Button */}
           <div className="hidden md:block">
             <Link to="/join-network">
-              <Button variant="hero" size="default">
+              <Button variant="hero" size="default" className="shadow-soft">
                 Join Network
               </Button>
             </Link>
@@ -58,6 +76,7 @@ export const Navbar = () => {
           <button
             className="md:hidden p-2 rounded-lg hover:bg-muted transition-colors"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
@@ -71,21 +90,28 @@ export const Navbar = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-background border-b border-border"
+            transition={{ duration: 0.2 }}
+            className="md:hidden bg-background border-b border-border overflow-hidden"
           >
-            <div className="px-4 py-4 space-y-3">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.name}
-                  to={link.href}
-                  className="block py-2 text-muted-foreground hover:text-foreground transition-colors font-medium"
-                  onClick={() => setIsOpen(false)}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <Link to="/join-network">
-                <Button variant="hero" size="lg" className="w-full mt-4">
+            <div className="px-4 py-4 space-y-1">
+              {navLinks.map((link) => {
+                const isActive = location.pathname === link.href;
+                return (
+                  <Link
+                    key={link.name}
+                    to={link.href}
+                    className={`block py-3 px-4 rounded-lg font-medium transition-colors ${
+                      isActive 
+                        ? "text-primary bg-primary/10" 
+                        : "text-muted-foreground hover:text-foreground hover:bg-muted"
+                    }`}
+                  >
+                    {link.name}
+                  </Link>
+                );
+              })}
+              <Link to="/join-network" className="block mt-4">
+                <Button variant="hero" size="lg" className="w-full">
                   Join Network
                 </Button>
               </Link>
