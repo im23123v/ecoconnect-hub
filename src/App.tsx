@@ -10,6 +10,8 @@ import JoinNetwork from "./pages/JoinNetwork";
 import About from "./pages/About";
 import Impact from "./pages/Impact";
 import Resources from "./pages/Resources";
+import BloodDonation from "./pages/BloodDonation";
+import TrackRequest from "./pages/TrackRequest";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
           <Route path="/about" element={<About />} />
           <Route path="/impact" element={<Impact />} />
           <Route path="/resources" element={<Resources />} />
+          <Route path="/blood-donation" element={<BloodDonation />} />
+          <Route path="/track-request" element={<TrackRequest />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

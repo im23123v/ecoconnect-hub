@@ -1,4 +1,4 @@
-import { Building2, TreePalm, Laptop, Shirt, Utensils, Filter, LucideIcon } from "lucide-react";
+import { Building2, TreePalm, Laptop, Shirt, Utensils, Filter, Heart, LucideIcon } from "lucide-react";
 
 export interface PickupSchedule {
   day: string;
@@ -34,6 +34,7 @@ export const categories = [
   { id: "ewaste", name: "E-Waste", icon: Laptop },
   { id: "textile", name: "Textile Waste", icon: Shirt },
   { id: "food", name: "Food Waste", icon: Utensils },
+  { id: "blood", name: "Blood Banks", icon: Heart },
 ];
 
 export const getIconForType = (type: string): LucideIcon => {
@@ -43,6 +44,7 @@ export const getIconForType = (type: string): LucideIcon => {
     case "e-waste": return Laptop;
     case "textile": return Shirt;
     case "food waste": return Utensils;
+    case "blood bank": return Heart;
     default: return Building2;
   }
 };
@@ -54,6 +56,7 @@ export const getColorForType = (type: string): string => {
     case "e-waste": return "bg-blue-500/20 text-blue-700";
     case "textile": return "bg-purple-500/20 text-purple-700";
     case "food waste": return "bg-amber-500/20 text-amber-700";
+    case "blood bank": return "bg-red-500/20 text-red-700";
     default: return "bg-muted text-muted-foreground";
   }
 };
@@ -65,6 +68,7 @@ export const getCategoryForType = (type: string): string => {
     case "e-waste": return "ewaste";
     case "textile": return "textile";
     case "food waste": return "food";
+    case "blood bank": return "blood";
     default: return "all";
   }
 };
