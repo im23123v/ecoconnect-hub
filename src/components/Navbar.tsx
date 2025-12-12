@@ -6,8 +6,9 @@ import { Button } from "./ui/button";
 
 const navLinks = [
   { name: "Locations", href: "/locations-map" },
+  { name: "Blood Donation", href: "/blood-donation" },
+  { name: "Track Request", href: "/track-request" },
   { name: "Impact", href: "/impact" },
-  { name: "Resources", href: "/resources" },
   { name: "About", href: "/about" },
 ];
 

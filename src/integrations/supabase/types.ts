@@ -74,6 +74,62 @@ export type Database = {
         }
         Relationships: []
       }
+      requests: {
+        Row: {
+          blood_type: string | null
+          created_at: string
+          description: string | null
+          id: string
+          location_id: string | null
+          request_type: Database["public"]["Enums"]["request_type"]
+          status: Database["public"]["Enums"]["request_status"]
+          units_needed: number | null
+          updated_at: string
+          urgency: string | null
+          user_email: string
+          user_name: string
+          user_phone: string
+        }
+        Insert: {
+          blood_type?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location_id?: string | null
+          request_type: Database["public"]["Enums"]["request_type"]
+          status?: Database["public"]["Enums"]["request_status"]
+          units_needed?: number | null
+          updated_at?: string
+          urgency?: string | null
+          user_email: string
+          user_name: string
+          user_phone: string
+        }
+        Update: {
+          blood_type?: string | null
+          created_at?: string
+          description?: string | null
+          id?: string
+          location_id?: string | null
+          request_type?: Database["public"]["Enums"]["request_type"]
+          status?: Database["public"]["Enums"]["request_status"]
+          units_needed?: number | null
+          updated_at?: string
+          urgency?: string | null
+          user_email?: string
+          user_name?: string
+          user_phone?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "requests_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
@@ -82,7 +138,8 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      request_status: "pending" | "acknowledged" | "in_transit" | "delivered"
+      request_type: "waste_pickup" | "blood_donation" | "blood_request"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -209,6 +266,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      request_status: ["pending", "acknowledged", "in_transit", "delivered"],
+      request_type: ["waste_pickup", "blood_donation", "blood_request"],
+    },
   },
 } as const

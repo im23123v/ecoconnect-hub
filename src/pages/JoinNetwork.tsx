@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, MapPin, Phone, Mail, Clock, Building2, TreePalm, Laptop, Shirt, Utensils, Plus, X } from "lucide-react";
+import { ArrowLeft, MapPin, Phone, Mail, Clock, Building2, TreePalm, Laptop, Shirt, Utensils, Heart, Plus, X } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -19,6 +19,7 @@ const locationTypes = [
   { value: "E-Waste", label: "E-Waste Center", icon: Laptop },
   { value: "Textile", label: "Textile Waste", icon: Shirt },
   { value: "Food Waste", label: "Food Waste", icon: Utensils },
+  { value: "Blood Bank", label: "Blood Bank", icon: Heart },
 ];
 
 const defaultSchedule = [
@@ -80,6 +81,7 @@ export default function JoinNetwork() {
       case "E-Waste": return "Laptop";
       case "Textile": return "Shirt";
       case "Food Waste": return "Utensils";
+      case "Blood Bank": return "Heart";
       default: return "MapPin";
     }
   };
@@ -91,6 +93,7 @@ export default function JoinNetwork() {
       case "E-Waste": return "bg-blue-500/20 text-blue-700";
       case "Textile": return "bg-purple-500/20 text-purple-700";
       case "Food Waste": return "bg-amber-500/20 text-amber-700";
+      case "Blood Bank": return "bg-red-500/20 text-red-700";
       default: return "bg-muted text-muted-foreground";
     }
   };

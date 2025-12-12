@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Recycle, MapPin, Users, Sparkles } from "lucide-react";
+import { ArrowRight, Recycle, MapPin, Users, Sparkles, Heart, Package } from "lucide-react";
 import { Button } from "./ui/button";
 import { useEffect, useState, useRef } from "react";
 
@@ -42,6 +42,7 @@ export const HeroSection = () => {
   const locations = useCountUp(150, 2000, isVisible);
   const recycled = useCountUp(5000, 2500, isVisible);
   const partners = useCountUp(200, 2000, isVisible);
+  const livesSaved = useCountUp(1250, 2000, isVisible);
 
   return (
     <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
@@ -83,7 +84,7 @@ export const HeroSection = () => {
             className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto mb-10"
           >
             Bridging demolition sites, coconut vendors, and waste producers with recycling companies. 
-            Turn your waste into valuable resources for new constructions and products.
+            Now with blood donation network - save lives while saving the planet.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -99,9 +100,16 @@ export const HeroSection = () => {
                 <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
               </Button>
             </Link>
-            <Link to="/join-network">
-              <Button variant="outline" size="xl">
-                Become a Partner
+            <Link to="/blood-donation">
+              <Button variant="outline" size="xl" className="group border-red-200 text-red-600 hover:bg-red-50 dark:border-red-800 dark:text-red-400 dark:hover:bg-red-950">
+                <Heart className="w-5 h-5 mr-2" />
+                Blood Donation
+              </Button>
+            </Link>
+            <Link to="/track-request">
+              <Button variant="ghost" size="xl" className="group">
+                <Package className="w-5 h-5 mr-2" />
+                Track Request
               </Button>
             </Link>
           </motion.div>
@@ -111,11 +119,12 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.2 }}
-            className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-3xl mx-auto"
+            className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto"
           >
             {[
               { icon: MapPin, value: locations, suffix: "+", label: "Collection Points" },
               { icon: Recycle, value: recycled, suffix: "+", label: "Tons Recycled" },
+              { icon: Heart, value: livesSaved, suffix: "+", label: "Lives Saved" },
               { icon: Users, value: partners, suffix: "+", label: "Active Partners" },
             ].map((stat) => (
               <div
