@@ -1,51 +1,11 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowRight, Recycle, MapPin, Users, Sparkles, Package, Heart } from "lucide-react";
+import { ArrowRight, Sparkles, Package } from "lucide-react";
 import { Button } from "./ui/button";
-import { useEffect, useState, useRef } from "react";
-
-// Optimized counter animation hook
-const useCountUp = (end: number, duration: number = 2000, start: boolean = true) => {
-  const [count, setCount] = useState(0);
-  const countRef = useRef(0);
-  
-  useEffect(() => {
-    if (!start) return;
-    const startTime = Date.now();
-    const tick = () => {
-      const elapsed = Date.now() - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      countRef.current = Math.floor(eased * end);
-      setCount(countRef.current);
-      if (progress < 1) requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }, [end, duration, start]);
-  
-  return count;
-};
 
 export const HeroSection = () => {
-  const [isVisible, setIsVisible] = useState(false);
-  const sectionRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => setIsVisible(entry.isIntersecting),
-      { threshold: 0.1 }
-    );
-    if (sectionRef.current) observer.observe(sectionRef.current);
-    return () => observer.disconnect();
-  }, []);
-
-  const locations = useCountUp(150, 2000, isVisible);
-  const recycled = useCountUp(5000, 2500, isVisible);
-  const partners = useCountUp(200, 2000, isVisible);
-  const livesSaved = useCountUp(1250, 2000, isVisible);
-
   return (
-    <section ref={sectionRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-16">
       {/* Optimized Background - using CSS transforms */}
       <div className="absolute inset-0 -z-10 will-change-transform">
         <div className="absolute top-0 -left-1/4 w-1/2 h-1/2 bg-primary/8 rounded-full blur-[100px] opacity-60" />
@@ -92,7 +52,7 @@ export const HeroSection = () => {
             initial={{ opacity: 0, y: 15 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.15 }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16"
+            className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
             <Link to="/locations-map">
               <Button variant="hero" size="xl" className="group">
@@ -106,34 +66,6 @@ export const HeroSection = () => {
                 Track Request
               </Button>
             </Link>
-          </motion.div>
-
-          {/* Stats - with animated counters */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, delay: 0.2 }}
-            className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-4xl mx-auto"
-          >
-            {[
-              { icon: MapPin, value: locations, suffix: "+", label: "Collection Points" },
-              { icon: Recycle, value: recycled, suffix: "+", label: "Tons Recycled" },
-              { icon: Heart, value: livesSaved, suffix: "+", label: "Lives Saved" },
-              { icon: Users, value: partners, suffix: "+", label: "Active Partners" },
-            ].map((stat) => (
-              <div
-                key={stat.label}
-                className="flex flex-col items-center p-6 rounded-2xl bg-card shadow-card border border-border hover:shadow-elevated transition-shadow duration-300"
-              >
-                <div className="w-12 h-12 rounded-xl bg-eco-sand flex items-center justify-center mb-3">
-                  <stat.icon className="w-6 h-6 text-primary" />
-                </div>
-                <span className="text-3xl font-bold text-foreground tabular-nums">
-                  {stat.value.toLocaleString()}{stat.suffix}
-                </span>
-                <span className="text-sm text-muted-foreground">{stat.label}</span>
-              </div>
-            ))}
           </motion.div>
         </div>
       </div>
