@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { MapPin, Truck, Factory, Sparkles, CheckCircle } from "lucide-react";
+import { MapPin, Truck, Factory, Sparkles, CheckCircle, ClipboardCheck, Search, Package } from "lucide-react";
 
 const steps = [
   {
@@ -25,6 +25,33 @@ const steps = [
     title: "New Life for Materials",
     description: "Recycled materials become raw inputs for new construction, products, and sustainable innovations.",
     color: "bg-accent",
+  },
+];
+
+const trackingSteps = [
+  {
+    icon: ClipboardCheck,
+    title: "Request",
+    description: "Submit your waste pickup or blood donation request through our platform.",
+    color: "bg-blue-500",
+  },
+  {
+    icon: CheckCircle,
+    title: "Acknowledgement",
+    description: "Receive confirmation that your request has been received and is being processed.",
+    color: "bg-amber-500",
+  },
+  {
+    icon: Search,
+    title: "Track",
+    description: "Monitor your request status in real-time as it progresses through our system.",
+    color: "bg-purple-500",
+  },
+  {
+    icon: Package,
+    title: "Delivered",
+    description: "Request fulfilled! Waste collected or blood donation completed successfully.",
+    color: "bg-primary",
   },
 ];
 
@@ -87,6 +114,55 @@ export const HowItWorksSection = () => {
                     {step.description}
                   </p>
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Tracking Steps Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          viewport={{ once: true, margin: "-50px" }}
+          className="text-center mt-24 mb-12"
+        >
+          <h3 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
+            Track Your <span className="text-gradient">Request</span>
+          </h3>
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Stay updated on your waste pickup or blood donation request at every step.
+          </p>
+        </motion.div>
+
+        <div className="relative">
+          {/* Connecting Line for tracking */}
+          <div className="hidden lg:block absolute top-12 left-0 right-0 h-0.5 bg-gradient-to-r from-blue-500 via-purple-500 to-primary opacity-30" />
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
+            {trackingSteps.map((step, index) => (
+              <motion.div
+                key={step.title}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                viewport={{ once: true, margin: "-30px" }}
+                className="relative group text-center"
+              >
+                {/* Step Icon Circle */}
+                <div className="flex justify-center mb-4">
+                  <div className={`w-16 h-16 rounded-full ${step.color} flex items-center justify-center text-white shadow-card relative z-10 transition-transform duration-200 group-hover:scale-110`}>
+                    <step.icon className="w-8 h-8" />
+                  </div>
+                </div>
+
+                {/* Content */}
+                <h4 className="text-lg font-semibold text-foreground mb-2 group-hover:text-primary transition-colors duration-200">
+                  {step.title}
+                </h4>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {step.description}
+                </p>
               </motion.div>
             ))}
           </div>
