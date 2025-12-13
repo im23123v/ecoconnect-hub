@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -26,6 +26,12 @@ import {
   AlertTriangle,
   CheckCircle,
   Search,
+  Package,
+  Truck,
+  CircleCheck,
+  Circle,
+  RefreshCw,
+  User,
 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
@@ -34,11 +40,49 @@ import { bloodBanks } from "@/data/bloodBanks";
 const bloodTypes = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
 const urgencyLevels = ["Normal", "Urgent", "Critical"];
 
+interface BloodRequest {
+  id: string;
+  user_name: string;
+  user_email: string;
+  user_phone: string;
+  blood_type: string | null;
+  units_needed: number | null;
+  urgency: string | null;
+  description: string | null;
+  status: string;
+  request_type: string;
+  created_at: string;
+  donor_name: string | null;
+  donor_email: string | null;
+  donor_phone: string | null;
+  acknowledged_at: string | null;
+  pickup_at: string | null;
+  in_transit_at: string | null;
+  delivered_at: string | null;
+  current_location: string | null;
+}
+
+const trackingSteps = [
+  { key: "pending", label: "Request Created", icon: Circle },
+  { key: "acknowledged", label: "Donor Acknowledged", icon: CheckCircle },
+  { key: "pickup", label: "Ready for Pickup", icon: Package },
+  { key: "in_transit", label: "In Transit", icon: Truck },
+  { key: "delivered", label: "Delivered", icon: CircleCheck },
+];
+
+const getStatusIndex = (status: string) => {
+  const index = trackingSteps.findIndex((step) => step.key === status);
+  return index === -1 ? 0 : index;
+};
+
 export default function BloodDonation() {
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState("banks");
+  const [activeTab, setActiveTab] = useState("requests");
   const [searchQuery, setSearchQuery] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [requests, setRequests] = useState<BloodRequest[]>([]);
+  const [donations, setDonations] = useState<BloodRequest[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -48,6 +92,11 @@ export default function BloodDonation() {
     urgency: "Normal",
     description: "",
   });
+  const [donorFormData, setDonorFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
 
   const filteredBanks = bloodBanks.filter(
     (bank) =>
@@ -55,8 +104,43 @@ export default function BloodDonation() {
       bank.address.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  const fetchRequests = async () => {
+    setIsLoading(true);
+    try {
+      const { data: requestsData, error: reqError } = await supabase
+        .from("requests")
+        .select("*")
+        .eq("request_type", "blood_request")
+        .order("created_at", { ascending: false });
+
+      const { data: donationsData, error: donError } = await supabase
+        .from("requests")
+        .select("*")
+        .eq("request_type", "blood_donation")
+        .order("created_at", { ascending: false });
+
+      if (reqError) throw reqError;
+      if (donError) throw donError;
+
+      setRequests((requestsData as BloodRequest[]) || []);
+      setDonations((donationsData as BloodRequest[]) || []);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchRequests();
+  }, []);
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleDonorInputChange = (field: string, value: string) => {
+    setDonorFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleBloodRequest = async (e: React.FormEvent) => {
@@ -80,7 +164,7 @@ export default function BloodDonation() {
 
       toast({
         title: "Blood Request Submitted",
-        description: "Your request has been submitted. We'll notify matching donors.",
+        description: "Your request is now visible to all donors.",
       });
 
       setFormData({
@@ -92,6 +176,7 @@ export default function BloodDonation() {
         urgency: "Normal",
         description: "",
       });
+      fetchRequests();
     } catch (error) {
       console.error("Error submitting request:", error);
       toast({
@@ -123,7 +208,7 @@ export default function BloodDonation() {
 
       toast({
         title: "Donor Registration Complete",
-        description: "Thank you for registering! We'll contact you when there's a matching request.",
+        description: "Your availability is now visible to everyone.",
       });
 
       setFormData({
@@ -135,6 +220,7 @@ export default function BloodDonation() {
         urgency: "Normal",
         description: "",
       });
+      fetchRequests();
     } catch (error) {
       console.error("Error registering donor:", error);
       toast({
@@ -145,6 +231,68 @@ export default function BloodDonation() {
     } finally {
       setIsSubmitting(false);
     }
+  };
+
+  const handleAcknowledge = async (requestId: string) => {
+    if (!donorFormData.name || !donorFormData.phone) {
+      toast({
+        title: "Missing Information",
+        description: "Please enter your name and phone number to acknowledge.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const { error } = await supabase
+        .from("requests")
+        .update({
+          status: "acknowledged",
+          donor_name: donorFormData.name,
+          donor_email: donorFormData.email,
+          donor_phone: donorFormData.phone,
+          acknowledged_at: new Date().toISOString(),
+          current_location: "Donor contacted",
+        })
+        .eq("id", requestId);
+
+      if (error) throw error;
+
+      toast({
+        title: "Request Acknowledged",
+        description: "You have acknowledged this blood request.",
+      });
+      setDonorFormData({ name: "", email: "", phone: "" });
+      fetchRequests();
+    } catch (error) {
+      console.error("Error acknowledging:", error);
+      toast({
+        title: "Error",
+        description: "Failed to acknowledge. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const getUrgencyColor = (urgency: string | null) => {
+    switch (urgency) {
+      case "Critical":
+        return "bg-red-100 text-red-700 border-red-200";
+      case "Urgent":
+        return "bg-orange-100 text-orange-700 border-orange-200";
+      default:
+        return "bg-green-100 text-green-700 border-green-200";
+    }
+  };
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
   };
 
   return (
@@ -167,8 +315,7 @@ export default function BloodDonation() {
               Blood Donation Network
             </h1>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Connect with blood banks, request blood, or register as a donor.
-              Every drop counts in saving lives.
+              View active blood requests, track donations in real-time, and help save lives.
             </p>
           </motion.div>
         </div>
@@ -178,20 +325,316 @@ export default function BloodDonation() {
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-8">
-            <TabsList className="grid w-full max-w-lg mx-auto grid-cols-3">
-              <TabsTrigger value="banks" className="flex items-center gap-2">
-                <MapPin className="w-4 h-4" />
-                Blood Banks
-              </TabsTrigger>
-              <TabsTrigger value="request" className="flex items-center gap-2">
+            <TabsList className="grid w-full max-w-2xl mx-auto grid-cols-5">
+              <TabsTrigger value="requests" className="flex items-center gap-1 text-xs sm:text-sm">
                 <AlertTriangle className="w-4 h-4" />
-                Request Blood
+                <span className="hidden sm:inline">Requests</span>
               </TabsTrigger>
-              <TabsTrigger value="donate" className="flex items-center gap-2">
+              <TabsTrigger value="donations" className="flex items-center gap-1 text-xs sm:text-sm">
                 <Droplets className="w-4 h-4" />
-                Donate
+                <span className="hidden sm:inline">Donors</span>
+              </TabsTrigger>
+              <TabsTrigger value="banks" className="flex items-center gap-1 text-xs sm:text-sm">
+                <MapPin className="w-4 h-4" />
+                <span className="hidden sm:inline">Banks</span>
+              </TabsTrigger>
+              <TabsTrigger value="new-request" className="flex items-center gap-1 text-xs sm:text-sm">
+                <Heart className="w-4 h-4" />
+                <span className="hidden sm:inline">Request</span>
+              </TabsTrigger>
+              <TabsTrigger value="donate" className="flex items-center gap-1 text-xs sm:text-sm">
+                <CheckCircle className="w-4 h-4" />
+                <span className="hidden sm:inline">Donate</span>
               </TabsTrigger>
             </TabsList>
+
+            {/* All Blood Requests Tab */}
+            <TabsContent value="requests" className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Active Blood Requests</h2>
+                <Button variant="outline" size="sm" onClick={fetchRequests}>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refresh
+                </Button>
+              </div>
+
+              {isLoading ? (
+                <div className="text-center py-12 text-muted-foreground">Loading...</div>
+              ) : requests.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  No blood requests at the moment.
+                </div>
+              ) : (
+                <div className="space-y-6">
+                  {requests.map((request, index) => (
+                    <motion.div
+                      key={request.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Card className="overflow-hidden">
+                        <CardHeader className="pb-3 bg-muted/30">
+                          <div className="flex flex-wrap items-start justify-between gap-2">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-red-100 dark:bg-red-900/30 rounded-full">
+                                <Droplets className="w-5 h-5 text-red-600" />
+                              </div>
+                              <div>
+                                <CardTitle className="text-lg">{request.user_name}</CardTitle>
+                                <p className="text-sm text-muted-foreground">
+                                  {formatDate(request.created_at)}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Badge className="text-lg px-3 py-1 bg-red-600 text-white">
+                                {request.blood_type}
+                              </Badge>
+                              <Badge variant="outline" className={getUrgencyColor(request.urgency)}>
+                                {request.urgency}
+                              </Badge>
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-4 space-y-4">
+                          <div className="grid md:grid-cols-3 gap-4 text-sm">
+                            <div className="flex items-center gap-2">
+                              <Phone className="w-4 h-4 text-muted-foreground" />
+                              <span>{request.user_phone}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <Users className="w-4 h-4 text-muted-foreground" />
+                              <span>{request.units_needed} units needed</span>
+                            </div>
+                            {request.description && (
+                              <div className="md:col-span-3 text-muted-foreground">
+                                {request.description}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Amazon-like Tracking Timeline */}
+                          <div className="bg-muted/30 rounded-lg p-4">
+                            <h4 className="font-medium mb-4 flex items-center gap-2">
+                              <Truck className="w-4 h-4" />
+                              Tracking Status
+                            </h4>
+                            <div className="flex items-center justify-between relative">
+                              {/* Progress Line */}
+                              <div className="absolute top-4 left-0 right-0 h-1 bg-muted rounded-full" />
+                              <div
+                                className="absolute top-4 left-0 h-1 bg-primary rounded-full transition-all duration-500"
+                                style={{
+                                  width: `${(getStatusIndex(request.status) / (trackingSteps.length - 1)) * 100}%`,
+                                }}
+                              />
+
+                              {trackingSteps.map((step, stepIndex) => {
+                                const currentIndex = getStatusIndex(request.status);
+                                const isCompleted = stepIndex <= currentIndex;
+                                const isCurrent = stepIndex === currentIndex;
+                                const StepIcon = step.icon;
+
+                                return (
+                                  <div
+                                    key={step.key}
+                                    className="flex flex-col items-center z-10"
+                                  >
+                                    <div
+                                      className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                                        isCompleted
+                                          ? "bg-primary text-primary-foreground"
+                                          : "bg-muted text-muted-foreground"
+                                      } ${isCurrent ? "ring-2 ring-primary ring-offset-2" : ""}`}
+                                    >
+                                      <StepIcon className="w-4 h-4" />
+                                    </div>
+                                    <span
+                                      className={`text-xs mt-2 text-center max-w-[60px] ${
+                                        isCompleted ? "text-primary font-medium" : "text-muted-foreground"
+                                      }`}
+                                    >
+                                      {step.label}
+                                    </span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            {request.current_location && (
+                              <div className="mt-4 pt-4 border-t border-border flex items-center gap-2 text-sm">
+                                <MapPin className="w-4 h-4 text-primary" />
+                                <span className="font-medium">Current Status:</span>
+                                <span className="text-muted-foreground">{request.current_location}</span>
+                              </div>
+                            )}
+
+                            {/* Timestamp Details */}
+                            <div className="mt-4 pt-4 border-t border-border grid grid-cols-2 md:grid-cols-5 gap-2 text-xs">
+                              {request.created_at && (
+                                <div>
+                                  <span className="text-muted-foreground">Created:</span>
+                                  <br />
+                                  {formatDate(request.created_at)}
+                                </div>
+                              )}
+                              {request.acknowledged_at && (
+                                <div>
+                                  <span className="text-muted-foreground">Acknowledged:</span>
+                                  <br />
+                                  {formatDate(request.acknowledged_at)}
+                                </div>
+                              )}
+                              {request.pickup_at && (
+                                <div>
+                                  <span className="text-muted-foreground">Pickup:</span>
+                                  <br />
+                                  {formatDate(request.pickup_at)}
+                                </div>
+                              )}
+                              {request.in_transit_at && (
+                                <div>
+                                  <span className="text-muted-foreground">In Transit:</span>
+                                  <br />
+                                  {formatDate(request.in_transit_at)}
+                                </div>
+                              )}
+                              {request.delivered_at && (
+                                <div>
+                                  <span className="text-muted-foreground">Delivered:</span>
+                                  <br />
+                                  {formatDate(request.delivered_at)}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Donor Acknowledge Section */}
+                          {request.status === "pending" && (
+                            <div className="border-t border-border pt-4">
+                              <h4 className="font-medium mb-3 flex items-center gap-2">
+                                <User className="w-4 h-4" />
+                                Want to help? Acknowledge this request
+                              </h4>
+                              <div className="grid md:grid-cols-4 gap-3">
+                                <Input
+                                  placeholder="Your Name *"
+                                  value={donorFormData.name}
+                                  onChange={(e) => handleDonorInputChange("name", e.target.value)}
+                                />
+                                <Input
+                                  placeholder="Phone *"
+                                  value={donorFormData.phone}
+                                  onChange={(e) => handleDonorInputChange("phone", e.target.value)}
+                                />
+                                <Input
+                                  placeholder="Email (optional)"
+                                  value={donorFormData.email}
+                                  onChange={(e) => handleDonorInputChange("email", e.target.value)}
+                                />
+                                <Button onClick={() => handleAcknowledge(request.id)}>
+                                  <CheckCircle className="w-4 h-4 mr-2" />
+                                  Acknowledge
+                                </Button>
+                              </div>
+                            </div>
+                          )}
+
+                          {/* Show donor info if acknowledged */}
+                          {request.donor_name && (
+                            <div className="bg-green-50 dark:bg-green-900/20 rounded-lg p-4">
+                              <h4 className="font-medium text-green-700 dark:text-green-300 mb-2">
+                                Donor Information
+                              </h4>
+                              <div className="grid md:grid-cols-3 gap-2 text-sm">
+                                <div>
+                                  <span className="text-muted-foreground">Name:</span>{" "}
+                                  {request.donor_name}
+                                </div>
+                                <div>
+                                  <span className="text-muted-foreground">Phone:</span>{" "}
+                                  {request.donor_phone}
+                                </div>
+                                {request.donor_email && (
+                                  <div>
+                                    <span className="text-muted-foreground">Email:</span>{" "}
+                                    {request.donor_email}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            {/* All Donations Tab */}
+            <TabsContent value="donations" className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-bold">Available Donors</h2>
+                <Button variant="outline" size="sm" onClick={fetchRequests}>
+                  <RefreshCw className="w-4 h-4 mr-2" />
+                  Refresh
+                </Button>
+              </div>
+
+              {isLoading ? (
+                <div className="text-center py-12 text-muted-foreground">Loading...</div>
+              ) : donations.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  No donors registered yet. Be the first to register!
+                </div>
+              ) : (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {donations.map((donor, index) => (
+                    <motion.div
+                      key={donor.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Card className="h-full hover:shadow-lg transition-shadow">
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <div className="flex items-center gap-3">
+                              <div className="p-2 bg-green-100 dark:bg-green-900/30 rounded-full">
+                                <Heart className="w-5 h-5 text-green-600" />
+                              </div>
+                              <div>
+                                <CardTitle className="text-lg">{donor.user_name}</CardTitle>
+                                <p className="text-sm text-muted-foreground">
+                                  Registered {formatDate(donor.created_at)}
+                                </p>
+                              </div>
+                            </div>
+                            <Badge className="text-lg px-3 py-1 bg-red-600 text-white">
+                              {donor.blood_type}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                            <Phone className="w-4 h-4" />
+                            <span>{donor.user_phone}</span>
+                          </div>
+                          {donor.description && (
+                            <p className="text-sm text-muted-foreground">{donor.description}</p>
+                          )}
+                          <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                            Available to Donate
+                          </Badge>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
 
             {/* Blood Banks Tab */}
             <TabsContent value="banks" className="space-y-6">
@@ -256,8 +699,8 @@ export default function BloodDonation() {
               </div>
             </TabsContent>
 
-            {/* Request Blood Tab */}
-            <TabsContent value="request">
+            {/* New Request Tab */}
+            <TabsContent value="new-request">
               <Card className="max-w-2xl mx-auto">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -445,13 +888,13 @@ export default function BloodDonation() {
                     </div>
 
                     <div className="bg-muted/50 rounded-lg p-4 space-y-2 text-sm">
-                      <p className="font-medium">Donor Eligibility:</p>
+                      <h4 className="font-medium">Donor Eligibility</h4>
                       <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                        <li>Age between 18-65 years</li>
-                        <li>Weight at least 50 kg</li>
+                        <li>Must be 18-65 years old</li>
+                        <li>Weight should be at least 50 kg</li>
+                        <li>No blood donation in the last 3 months</li>
                         <li>No recent tattoos or piercings (within 6 months)</li>
-                        <li>Not pregnant or breastfeeding</li>
-                        <li>No recent surgeries (within 6 months)</li>
+                        <li>Generally in good health</li>
                       </ul>
                     </div>
 

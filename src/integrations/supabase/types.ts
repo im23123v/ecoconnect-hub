@@ -76,11 +76,19 @@ export type Database = {
       }
       requests: {
         Row: {
+          acknowledged_at: string | null
           blood_type: string | null
           created_at: string
+          current_location: string | null
+          delivered_at: string | null
           description: string | null
+          donor_email: string | null
+          donor_name: string | null
+          donor_phone: string | null
           id: string
+          in_transit_at: string | null
           location_id: string | null
+          pickup_at: string | null
           request_type: Database["public"]["Enums"]["request_type"]
           status: Database["public"]["Enums"]["request_status"]
           units_needed: number | null
@@ -91,11 +99,19 @@ export type Database = {
           user_phone: string
         }
         Insert: {
+          acknowledged_at?: string | null
           blood_type?: string | null
           created_at?: string
+          current_location?: string | null
+          delivered_at?: string | null
           description?: string | null
+          donor_email?: string | null
+          donor_name?: string | null
+          donor_phone?: string | null
           id?: string
+          in_transit_at?: string | null
           location_id?: string | null
+          pickup_at?: string | null
           request_type: Database["public"]["Enums"]["request_type"]
           status?: Database["public"]["Enums"]["request_status"]
           units_needed?: number | null
@@ -106,11 +122,19 @@ export type Database = {
           user_phone: string
         }
         Update: {
+          acknowledged_at?: string | null
           blood_type?: string | null
           created_at?: string
+          current_location?: string | null
+          delivered_at?: string | null
           description?: string | null
+          donor_email?: string | null
+          donor_name?: string | null
+          donor_phone?: string | null
           id?: string
+          in_transit_at?: string | null
           location_id?: string | null
+          pickup_at?: string | null
           request_type?: Database["public"]["Enums"]["request_type"]
           status?: Database["public"]["Enums"]["request_status"]
           units_needed?: number | null
@@ -138,7 +162,12 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      request_status: "pending" | "acknowledged" | "in_transit" | "delivered"
+      request_status:
+        | "pending"
+        | "acknowledged"
+        | "in_transit"
+        | "delivered"
+        | "pickup"
       request_type: "waste_pickup" | "blood_donation" | "blood_request"
     }
     CompositeTypes: {
@@ -267,7 +296,13 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      request_status: ["pending", "acknowledged", "in_transit", "delivered"],
+      request_status: [
+        "pending",
+        "acknowledged",
+        "in_transit",
+        "delivered",
+        "pickup",
+      ],
       request_type: ["waste_pickup", "blood_donation", "blood_request"],
     },
   },
